@@ -2,10 +2,9 @@
 #include "graphics.h"
 
 /*==========Constant==========*/
-#define WIDTH 800
+#define MAXWIDTH 800
 #define HEIGHT 600
-#define BUTTON_WIDTH 
-#define BUTTON_HEIGTH
+#define MENU_WIDTH 600
 /*==========Window game==========*/
 
 typedef struct menu_item{ 
@@ -13,30 +12,32 @@ typedef struct menu_item{
   const char *text;
 } menu_item;
 
-menu_item main_menu[5]={
-  {(MAXWIDTH-MENU_WIDTH)/2,70,MENU_WIDTH,40,"Игра с компьютером"},
-  {(MAXWIDTH-MENU_WIDTH)/2,130,MENU_WIDTH,40,"Игра по сети(два человека)"},
-  {(MAXWIDTH-MENU_WIDTH)/2,190,MENU_WIDTH,40,"Правила игры"},
-  {(MAXWIDTH-MENU_WIDTH)/2,250,MENU_WIDTH,40,"О программе"},
-  {(MAXWIDTH-MENU_WIDTH)/2,310,MENU_WIDTH,40,"Выход"}
+menu_item main_menu[]={
+  {(MAXWIDTH-MENU_WIDTH)/2,70,MENU_WIDTH,40,"РЎР»РѕР¶РЅРѕСЃС‚СЊ 1\n(РїРѕР»Рµ 5x6)"},
+  {(MAXWIDTH-MENU_WIDTH)/2,130,MENU_WIDTH,40,"РЎР»РѕР¶РЅРѕСЃС‚СЊ 2\n(РїРѕР»Рµ 6x7)"},
+  {(MAXWIDTH-MENU_WIDTH)/2,190,MENU_WIDTH,40,"РЎР»РѕР¶РЅРѕСЃС‚СЊ 3\n(РїРѕР»Рµ 7x8)"},
+  {(MAXWIDTH-MENU_WIDTH)/2,250,MENU_WIDTH,40,"РЎР»РѕР¶РЅРѕСЃС‚СЊ 4\n(РїРѕР»Рµ 8x9)"},
+  {(MAXWIDTH-MENU_WIDTH)/2,310,MENU_WIDTH,40,"РЎР»РѕР¶РЅРѕСЃС‚СЊ 5\n(РїРѕР»Рµ 9x10)"},
+  {(MAXWIDTH-MENU_WIDTH)/2,370,MENU_WIDTH,40,"РџСЂР°РІРёР»Р° РёРіСЂС‹"},
+  {(MAXWIDTH-MENU_WIDTH)/2,430,MENU_WIDTH,40,"Рћ РїСЂРѕРіСЂР°РјРјРµ"},
+  {(MAXWIDTH-MENU_WIDTH)/2,490,MENU_WIDTH,40,"Р’С‹С…РѕРґ"}
 };
 
-void field(int n);
-void init();
-void menu();
+void draw_menu_item();
+void draw_main_menu();
 void new_game();
 void about();
 void rules();
 
 int main() {
-   initwindow(WIDTH, HEIGHT, "The Slider");
-   menu();
+   initwindow(MAXWIDTH, HEIGHT, "The Slider");
+   draw_main_menu();
    getch();
    closegraph();
    return 0;
 }
 
-void menu() {
+void draw_main_menu() {
    setbkcolor(WHITE);
    clearviewport();
    setbkcolor(GREEN);
@@ -46,3 +47,6 @@ void menu() {
    bar(450, 400, 650, 500);
 }
 
+void new_game(int n){
+   return;
+}
