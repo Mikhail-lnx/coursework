@@ -24,7 +24,7 @@ menu_item main_menu[]={
   {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
 };
 
-
+int waitclick(int *x1, int *y1, int *x2, int *y2);
 void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game();
@@ -32,18 +32,30 @@ void about();
 void rules();
 
 int main(){
-   initwindow(MENU_WIDTH, MENU_HEIGHT, "The Slider");
    draw_main_menu();
    getch();
    closegraph();
    return 0;
 }
 
+
+int waitclick(int *x1, int *y1, int *x2, int *y2){
+  int b;
+  while((b=mousebuttons())==0) { // ждем нажатия кнопки
+     if(kbhit()) return 0; // если нажата клавиша - выйти
+  }
+  *x1=mousex();
+  *y1=mousey();
+  while(mousebuttons()==0); // ждем отпускания кнопки
+  *x2=mousex();
+  *y2=mousey();
+  return b;
+}
+
 void draw_main_menu(){
+   initwindow(MENU_WIDTH, MENU_HEIGHT, "The Slider");
    setbkcolor(WHITE);
    clearviewport();
-   //setbkcolor(GREEN);
-   //setfillstyle(EMPTY_FILL, GREEN);
    for(int i = 0; i < 8; i++){
 	   draw_menu_item(&main_menu[i]);
    }
