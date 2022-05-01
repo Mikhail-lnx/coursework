@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <graphics.h>
 
-/*==========Constant==========*/
+/*==========Константы==========*/
 #define MENU_WIDTH 250
 #define MENU_HEIGHT 580
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 50
-/*==========Window game==========*/
+
 
 typedef struct menu_item {
    int x,y;
@@ -22,7 +22,7 @@ menu_item main_menu[]= {
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 350, "Правила игры"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 410, "О программе"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
-};
+}; // Массив структур menu item, содержащих информацию о кнопках главного меню
 
 
 int waitclick(int *x1, int *y1, int *x2, int *y2);
@@ -30,8 +30,8 @@ int press_left_button();
 void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game(int n);
-void about();
-void rules();
+void init_game(int i, const char *s);
+
 
 int main() {
    draw_main_menu();
@@ -43,12 +43,12 @@ int main() {
 
 int waitclick(int *x1, int *y1, int *x2, int *y2) {
    int mouse;
-   while ((mouse=mousebuttons())==0) { // ждем нажатия кнопки
-      if (kbhit()) return 0; // если нажата клавиша - выйти
+   while ((mouse=mousebuttons())==0) { 
+      if (kbhit()) return 0; 
    }
    *x1=mousex();
    *y1=mousey();
-   while (mousebuttons()==0); // ждем отпускания кнопки
+   while (mousebuttons()==0); 
    *x2=mousex();
    *y2=mousey();
    return mouse;
@@ -74,7 +74,7 @@ void draw_menu_item(menu_item *main_menu) {
       settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
       outtext(main_menu->text);
    }
-} // рисование кнопки
+} // рисование кнопки главного меню
 
 int press_left_button() {
    int x1, x2, y1, y2;
@@ -91,39 +91,34 @@ int press_left_button() {
 
 void new_game(int n) {
    closegraph();
-   IMAGE *pic1,*pic2,*pic3,*pic4,*pic5;
+   IMAGE *pic;
    switch (n) {
    case 1:
-      initwindow(480, 320);
-      pic1 = loadBMP("field1.jpg");
-      putimage(10, 10, pic1, COPY_PUT);
+	  init_game(1, "field1.jpg"); 
       return;
    case 2:
-      initwindow(530, 370);
-      pic2 = loadBMP("field2.jpg");
-      putimage(10, 10, pic2, COPY_PUT);
+	  init_game(2, "field2.jpg");
       return;
    case 3:
-      initwindow(580, 420);
-      pic3 = loadBMP("field3.jpg");
-      putimage(10, 10, pic3, COPY_PUT);
-      return;
+      init_game(3, "field3.jpg");
+	  return;
    case 4:
-      initwindow(630, 470);
-      pic4 = loadBMP("field4.jpg");
-      putimage(10, 10, pic4, COPY_PUT);
-      return;
+      init_game(4, "field4.jpg");
+	  return;
    case 5:
-      initwindow(680, 520);
-      pic5 = loadBMP("field5.jpg");
-      putimage(10, 10, pic5, COPY_PUT);
-      return;
+      init_game(5, "field5.jpg");
+	  return;
    case 6:
       return;
    case 7:
       return;
    case 8:
-      closegraph();
       return;
    }
 } // загрузка  новой игры, правил, информации о программе или выход из программы (в зависимости от того, какую кнопку нажал пользователь)
+void init_game(int i, const char *s){
+	initwindow(430+50*i, 270+50*i);
+	setbkcolor(BLUE);
+	clearviewport();
+	putimage(10, 10, loadBMP(s), COPY_PUT);
+} // инициализация параметров игры
