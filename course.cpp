@@ -2,9 +2,9 @@
 #include <graphics.h>
 
 /*==========Constant==========*/
-#define MENU_WIDTH 400
+#define MENU_WIDTH 250 
 #define MENU_HEIGHT 580
-#define BUTTON_WIDTH 250
+#define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 50
 /*==========Window game==========*/
 
@@ -25,6 +25,7 @@ menu_item main_menu[]={
 };
 
 int waitclick(int *x1, int *y1, int *x2, int *y2);
+int press_left_button();
 void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game();
@@ -33,6 +34,10 @@ void rules();
 
 int main(){
    draw_main_menu();
+   if(int c = press_left_button() <= 5){
+	   closegraph();
+	   new_game(c);
+	}
    getch();
    closegraph();
    return 0;
@@ -74,17 +79,35 @@ void draw_menu_item(menu_item *main_menu){
   } 
 }
 
+int press_left_button(){
+	int x1, x2, y1, y2;
+	while(1){
+		while(waitclick(&x1, &y1, &x2, &y2) != 1 || x1 != x2 || y1 != y2);
+		for(int i = 0; i < 8; ++i){
+			if(x1 >= main_menu[0].x && x1 <= main_menu[0].x + BUTTON_WIDTH && y1 >= main_menu[i].y && y1 <= main_menu[i].y + BUTTON_HEIGHT){
+				return i+1;
+			}
+		}
+	} 
+} // определение нажатия левой кнопки мыши по одной из кнопок в главном меню
+
+
 void new_game(int n){
    switch(n){
          case 1:
+			initwindow(480, 320);
             return;
          case 2:
+			initwindow(480, 320);
             return;
          case 3:
+			initwindow(480, 320);
             return;
          case 4:
+			initwindow(480, 320);
             return;
          case 5:
+			initwindow(480, 320);
             return;
    }
 }
