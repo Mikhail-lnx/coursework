@@ -4,7 +4,7 @@
 /*==========Constant==========*/
 #define MENU_WIDTH 400
 #define MENU_HEIGHT 580
-#define BUTTON_WIDTH 350
+#define BUTTON_WIDTH 250
 #define BUTTON_HEIGHT 50
 /*==========Window game==========*/
 
@@ -14,11 +14,11 @@ typedef struct menu_item{
 } menu_item;
 
 menu_item main_menu[]={
-  {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "Сложность 1 (поле 5x6)"},
-  {(MENU_WIDTH-BUTTON_WIDTH)/2, 110, "Сложность 2 (поле 6x7)"},
-  {(MENU_WIDTH-BUTTON_WIDTH)/2, 170, "Сложность 3 (поле 7x8)"},
-  {(MENU_WIDTH-BUTTON_WIDTH)/2, 230, "Сложность 4 (поле 8x9)"},
-  {(MENU_WIDTH-BUTTON_WIDTH)/2, 290, "Сложность 5 (поле 9x10)"},
+  {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "поле 5x6"},
+  {(MENU_WIDTH-BUTTON_WIDTH)/2, 110, "поле 6x7"},
+  {(MENU_WIDTH-BUTTON_WIDTH)/2, 170, "поле 7x8"},
+  {(MENU_WIDTH-BUTTON_WIDTH)/2, 230, "поле 8x9"},
+  {(MENU_WIDTH-BUTTON_WIDTH)/2, 290, "поле 9x10"},
   {(MENU_WIDTH-BUTTON_WIDTH)/2, 350, "Правила игры"},
   {(MENU_WIDTH-BUTTON_WIDTH)/2, 410, "О программе"},
   {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
