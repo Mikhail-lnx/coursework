@@ -24,6 +24,7 @@ menu_item main_menu[]={
   {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
 };
 
+
 int waitclick(int *x1, int *y1, int *x2, int *y2);
 int press_left_button();
 void draw_main_menu();
@@ -35,8 +36,6 @@ void rules();
 int main(){
    draw_main_menu();
    new_game(press_left_button());
-   getch();
-   closegraph();
    return 0;
 }
 
@@ -52,7 +51,7 @@ int waitclick(int *x1, int *y1, int *x2, int *y2){
   *x2=mousex();
   *y2=mousey();
   return mouse;
-}
+} // определение нажатия кнопки на мыши
 
 void draw_main_menu(){
    initwindow(MENU_WIDTH, MENU_HEIGHT, "The Slider");
@@ -61,7 +60,7 @@ void draw_main_menu(){
    for(int i = 0; i < 8; i++){
 	   draw_menu_item(&main_menu[i]);
    }
-}
+} // рисование главного меню
 
 void draw_menu_item(menu_item *main_menu){
   setfillstyle(SOLID_FILL, COLOR(255,165,0));
@@ -74,7 +73,7 @@ void draw_menu_item(menu_item *main_menu){
         settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
 	outtext(main_menu->text);
   } 
-}
+} // рисование кнопки
 
 int press_left_button(){
 	int x1, x2, y1, y2;
@@ -90,9 +89,13 @@ int press_left_button(){
 
 
 void new_game(int n){
+   closegraph();
+   IMAGE *pic1, *pic2, *pic3, *pic4, *pic5;
    switch(n){
          case 1:
-			initwindow(480, 320);
+            initwindow(480, 320);
+            pic1 = loadBMP("field1.bmp");
+            putimage(10, 10, pic1, OR_PUT);
             return;
          case 2:
 			initwindow(580, 370);
@@ -105,6 +108,13 @@ void new_game(int n){
             return;
          case 5:
 			initwindow(880, 520);
+            return;
+         case 6:
+            return;
+         case 7:
+            return;
+         case 8:
+            closegraph();
             return;
    }
 }
