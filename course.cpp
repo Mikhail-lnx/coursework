@@ -28,16 +28,13 @@ int waitclick(int *x1, int *y1, int *x2, int *y2);
 int press_left_button();
 void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
-void new_game();
+void new_game(int n);
 void about();
 void rules();
 
 int main(){
    draw_main_menu();
-   if(int c = press_left_button() <= 5){
-	   closegraph();
-	   new_game(c);
-	}
+   new_game(press_left_button());
    getch();
    closegraph();
    return 0;
@@ -45,8 +42,8 @@ int main(){
 
 
 int waitclick(int *x1, int *y1, int *x2, int *y2){
-  int b;
-  while((b=mousebuttons())==0) { // ждем нажатия кнопки
+  int mouse;
+  while((mouse=mousebuttons())==0) { // ждем нажатия кнопки
      if(kbhit()) return 0; // если нажата клавиша - выйти
   }
   *x1=mousex();
@@ -54,7 +51,7 @@ int waitclick(int *x1, int *y1, int *x2, int *y2){
   while(mousebuttons()==0); // ждем отпускания кнопки
   *x2=mousex();
   *y2=mousey();
-  return b;
+  return mouse;
 }
 
 void draw_main_menu(){
@@ -98,16 +95,16 @@ void new_game(int n){
 			initwindow(480, 320);
             return;
          case 2:
-			initwindow(480, 320);
+			initwindow(580, 370);
             return;
          case 3:
-			initwindow(480, 320);
+			initwindow(680, 420);
             return;
          case 4:
-			initwindow(480, 320);
+			initwindow(780, 470);
             return;
          case 5:
-			initwindow(480, 320);
+			initwindow(880, 520);
             return;
    }
 }
