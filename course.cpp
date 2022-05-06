@@ -6,15 +6,15 @@
 #define MENU_HEIGHT 580
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 50
-
-
+#define INDENT_FIELD 20
+ 
 typedef struct menu_item {
    int x,y;
    const char *text;
 } menu_item;
 
 menu_item main_menu[]= {
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "поле 5x6"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "пj�ле 5x6"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 110, "поле 6x7"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 170, "поле 7x8"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 230, "поле 8x9"},
@@ -30,7 +30,7 @@ int press_left_button();
 void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game(int n);
-void init_game(int i, const char *s);
+void init_game(int i);
 
 
 int main() {
@@ -94,19 +94,19 @@ void new_game(int n) {
    IMAGE *pic;
    switch (n) {
    case 1:
-	  init_game(1, "field1.jpg"); 
+	  init_game(1);
       return;
    case 2:
-	  init_game(2, "field2.jpg");
+	  init_game(2);
       return;
    case 3:
-      init_game(3, "field3.jpg");
+      init_game(3);
 	  return;
    case 4:
-      init_game(4, "field4.jpg");
+      init_game(4);
 	  return;
    case 5:
-      init_game(5, "field5.jpg");
+      init_game(5);
 	  return;
    case 6:
       return;
@@ -116,9 +116,19 @@ void new_game(int n) {
       return;
    }
 } // загрузка  новой игры, правил, информации о программе или выход из программы (в зависимости от того, какую кнопку нажал пользователь)
-void init_game(int i, const char *s){
+void init_game(int i){
 	initwindow(430+50*i, 270+50*i);
 	setbkcolor(BLUE);
 	clearviewport();
-	putimage(10, 10, loadBMP(s), COPY_PUT);
-} // инициализация параметров игры
+	bar(10, 10, 210+50*i, 260+50*i);
+	setbkcolor(WHITE);	
+	for(int j = 0; j < i+5; j++){
+		for(int k = 0; k < i+4; k++){
+			setcolor(BLACK);
+			setlinestyle(SOLID_LINE, 0, 2);
+			setfillstyle(SOLID_FILL,BLACK);
+			fillellipse(10 + INDENT_FIELD + k*(200+50*i-2*INDENT_FIELD)/(i+3), 10 + INDENT_FIELD + j*(250+50*i-2*INDENT_FIELD)/(i+4), 3, 3);
+		}
+	 
+	} // инициализация параметров игры
+}
