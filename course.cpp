@@ -13,8 +13,8 @@ typedef struct menu_item {
    const char *text;
 } menu_item;
 
-menu_item main_menu[]= {
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "пj�ле 5x6"},
+menu_item main_menu[]= { // Массив структур menu item, содержащих информацию о кнопках главного меню
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "поле 5x6"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 110, "поле 6x7"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 170, "поле 7x8"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 230, "поле 8x9"},
@@ -22,7 +22,7 @@ menu_item main_menu[]= {
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 350, "Правила игры"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 410, "О программе"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
-}; // Массив структур menu item, содержащих информацию о кнопках главного меню
+};
 
 
 int waitclick(int *x1, int *y1, int *x2, int *y2);
@@ -41,7 +41,7 @@ int main() {
 }
 
 
-int waitclick(int *x1, int *y1, int *x2, int *y2) {
+int waitclick(int *x1, int *y1, int *x2, int *y2) {// определение нажатия кнопки на мыши
    int mouse;
    while ((mouse=mousebuttons())==0) { 
       if (kbhit()) return 0; 
@@ -52,18 +52,18 @@ int waitclick(int *x1, int *y1, int *x2, int *y2) {
    *x2=mousex();
    *y2=mousey();
    return mouse;
-} // определение нажатия кнопки на мыши
+} 
 
-void draw_main_menu() {
+void draw_main_menu() {// рисование главного меню
    initwindow(MENU_WIDTH, MENU_HEIGHT, "The Slider");
    setbkcolor(WHITE);
    clearviewport();
    for (int i = 0; i < 8; i++) {
       draw_menu_item(&main_menu[i]);
    }
-} // рисование главного меню
+} 
 
-void draw_menu_item(menu_item *main_menu) {
+void draw_menu_item(menu_item *main_menu) {// рисование кнопки главного меню
    setfillstyle(SOLID_FILL, COLOR(255,165,0));
    for (int i = 0; i < 8; i++) {
       bar(main_menu->x,main_menu->y,main_menu->x+BUTTON_WIDTH,main_menu->y+BUTTON_HEIGHT);
@@ -74,9 +74,9 @@ void draw_menu_item(menu_item *main_menu) {
       settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
       outtext(main_menu->text);
    }
-} // рисование кнопки главного меню
+} 
 
-int press_left_button() {
+int press_left_button() {// определение нажатия левой кнопки мыши по одной из кнопок в главном меню
    int x1, x2, y1, y2;
    while (1) {
       while (waitclick(&x1, &y1, &x2, &y2) != 1 || x1 != x2 || y1 != y2);
@@ -86,10 +86,10 @@ int press_left_button() {
          }
       }
    }
-} // определение нажатия левой кнопки мыши по одной из кнопок в главном меню
+} 
 
 
-void new_game(int n) {
+void new_game(int n) { // загрузка  новой игры, правил, информации о программе или выход из программы (в зависимости от того, какую кнопку нажал пользователь)
    closegraph();
    IMAGE *pic;
    switch (n) {
@@ -115,8 +115,8 @@ void new_game(int n) {
    case 8:
       return;
    }
-} // загрузка  новой игры, правил, информации о программе или выход из программы (в зависимости от того, какую кнопку нажал пользователь)
-void init_game(int i){
+}
+void init_game(int i){ // инициализация параметров игры
 	initwindow(430+50*i, 270+50*i);
 	setbkcolor(BLUE);
 	clearviewport();
@@ -130,5 +130,5 @@ void init_game(int i){
 			fillellipse(10 + INDENT_FIELD + k*(200+50*i-2*INDENT_FIELD)/(i+3), 10 + INDENT_FIELD + j*(250+50*i-2*INDENT_FIELD)/(i+4), 3, 3);
 		}
 	 
-	} // инициализация параметров игры
+	}
 }
