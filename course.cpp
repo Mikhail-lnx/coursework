@@ -6,7 +6,7 @@
 #define MENU_HEIGHT 580
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 50
-#define INDENT_FIELD 20
+#define INDENT_FIELD 30
  
 typedef struct menu_item {
    int x,y;
@@ -14,11 +14,11 @@ typedef struct menu_item {
 } menu_item;
 
 menu_item main_menu[]= { // Массив структур menu item, содержащих информацию о кнопках главного меню
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "поле 5x6"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 110, "поле 6x7"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 170, "поле 7x8"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 230, "поле 8x9"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 290, "поле 9x10"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 50, "Поле 5x6"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 110, "Поле 6x7"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 170, "Поле 7x8"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 230, "Поле 8x9"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 290, "Поле 9x10"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 350, "Правила игры"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 410, "О программе"},
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
@@ -66,9 +66,9 @@ void draw_main_menu() {// рисование главного меню
 void draw_menu_item(menu_item *main_menu) {// рисование кнопки главного меню
    setfillstyle(SOLID_FILL, COLOR(255,165,0));
    for (int i = 0; i < 8; i++) {
-      bar(main_menu->x,main_menu->y,main_menu->x+BUTTON_WIDTH,main_menu->y+BUTTON_HEIGHT);
-      moveto(main_menu->x+BUTTON_WIDTH/2,main_menu->y+BUTTON_HEIGHT*2/3);
-      setbkcolor(COLOR(255,165,0));
+      bar(main_menu->x, main_menu->y, main_menu->x+BUTTON_WIDTH, main_menu->y+BUTTON_HEIGHT);
+      moveto(main_menu->x+BUTTON_WIDTH/2, main_menu->y+BUTTON_HEIGHT*2/3);
+      setbkcolor(COLOR(255, 165,0 ));
       setcolor(BLACK);
       settextjustify(CENTER_TEXT, CENTER_TEXT);
       settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
@@ -92,28 +92,28 @@ int press_left_button() {// определение нажатия левой к�
 void new_game(int n) { // загрузка  новой игры, правил, информации о программе или выход из программы (в зависимости от того, какую кнопку нажал пользователь)
    closegraph();
    IMAGE *pic;
-   switch (n) {
-   case 1:
-	  init_game(1);
-      return;
-   case 2:
-	  init_game(2);
-      return;
-   case 3:
-      init_game(3);
-	  return;
-   case 4:
-      init_game(4);
-	  return;
-   case 5:
-      init_game(5);
-	  return;
-   case 6:
-      return;
-   case 7:
-      return;
-   case 8:
-      return;
+   switch(n) {
+      case 1:
+         init_game(1);
+         return;
+      case 2:
+         init_game(2);
+         return;
+      case 3:
+         init_game(3);
+         return;
+      case 4:
+         init_game(4);
+         return;
+      case 5:
+         init_game(5);
+         return;
+      case 6:
+         return;
+      case 7:
+         return;
+      case 8:
+         return;
    }
 }
 void init_game(int i){ // инициализация параметров игры
@@ -121,14 +121,14 @@ void init_game(int i){ // инициализация параметров игр
 	setbkcolor(BLUE);
 	clearviewport();
 	bar(10, 10, 210+50*i, 260+50*i);
-	setbkcolor(WHITE);	
+	setbkcolor(WHITE);
 	for(int j = 0; j < i+5; j++){
 		for(int k = 0; k < i+4; k++){
 			setcolor(BLACK);
 			setlinestyle(SOLID_LINE, 0, 2);
 			setfillstyle(SOLID_FILL,BLACK);
-			fillellipse(10 + INDENT_FIELD + k*(200+50*i-2*INDENT_FIELD)/(i+3), 10 + INDENT_FIELD + j*(250+50*i-2*INDENT_FIELD)/(i+4), 3, 3);
+			fillellipse(INDENT_FIELD + k*(220+50*i-2*INDENT_FIELD)/(i+3), INDENT_FIELD + j*(270+50*i-2*INDENT_FIELD)/(i+4), 3, 3);
 		}
-	 
 	}
+        
 }
