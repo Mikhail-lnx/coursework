@@ -117,6 +117,7 @@ void new_game(int n) { // загрузка  новой игры, правил, �
    }
 }
 void init_game(int i){ // инициализация параметров игры
+	int dx = (220+50*i-2*INDENT_FIELD)/(i+3), dy = (270+50*i-2*INDENT_FIELD)/(i+4);
 	initwindow(430+50*i, 270+50*i);
 	setbkcolor(BLUE);
 	clearviewport();
@@ -127,7 +128,7 @@ void init_game(int i){ // инициализация параметров игр
 			setcolor(BLACK);
 			setlinestyle(SOLID_LINE, 0, 2);
 			setfillstyle(SOLID_FILL,BLACK);
-			fillellipse(INDENT_FIELD + k*(220+50*i-2*INDENT_FIELD)/(i+3), INDENT_FIELD + j*(270+50*i-2*INDENT_FIELD)/(i+4), 3, 3);
+			fillellipse(INDENT_FIELD + k*dx, INDENT_FIELD + j*dy, 3, 3);
 		}
 	}
         
