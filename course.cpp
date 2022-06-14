@@ -24,6 +24,7 @@ menu_item main_menu[]= { // Массив структур menu item, содер�
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 470, "Выход"}
 };
 
+int field[21][19]; // Массив, содержащий информацию о поле игры
 
 int waitclick(int *x1, int *y1, int *x2, int *y2);
 int press_left_button();
@@ -31,7 +32,7 @@ void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game(int n);
 void init_game(int i);
-
+void check_move(int i, int dx, int dy,int *field);
 
 int main() {
    draw_main_menu();
@@ -68,7 +69,7 @@ void draw_menu_item(menu_item *main_menu) {// рисование кнопки г
    for (int i = 0; i < 8; i++) {
       bar(main_menu->x, main_menu->y, main_menu->x+BUTTON_WIDTH, main_menu->y+BUTTON_HEIGHT);
       moveto(main_menu->x+BUTTON_WIDTH/2, main_menu->y+BUTTON_HEIGHT*2/3);
-      setbkcolor(COLOR(255, 165,0 ));
+      setbkcolor(COLOR(255,165,0));
       setcolor(BLACK);
       settextjustify(CENTER_TEXT, CENTER_TEXT);
       settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
@@ -91,7 +92,6 @@ int press_left_button() {// определение нажатия левой к�
 
 void new_game(int n) { // загрузка  новой игры, правил, информации о программе или выход из программы (в зависимости от того, какую кнопку нажал пользователь)
    closegraph();
-   IMAGE *pic;
    switch(n) {
       case 1:
          init_game(1);
@@ -117,6 +117,7 @@ void new_game(int n) { // загрузка  новой игры, правил, �
    }
 }
 void init_game(int i){ // инициализация параметров игры
+	for(int j = 0; j < 2*i+11; j++) for(int k = 0; k < 2*i+9; k++) field[j][k] = ((j >= 1 && j < 2*i+10 && k >= 1 && k < 2*i+8 && j % 2 != k % 2) ? 0 : 1);
 	int dx = (220+50*i-2*INDENT_FIELD)/(i+3), dy = (270+50*i-2*INDENT_FIELD)/(i+4);
 	initwindow(430+50*i, 270+50*i);
 	setbkcolor(BLUE);
@@ -131,5 +132,5 @@ void init_game(int i){ // инициализация параметров игр
 			fillellipse(INDENT_FIELD + k*dx, INDENT_FIELD + j*dy, 3, 3);
 		}
 	}
-        
+    check_move(i, dx, dy, field);
 }
