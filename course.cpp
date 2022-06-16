@@ -25,33 +25,35 @@ menu_item main_menu[]= { // Массив структур menu item, содер�
 };
 
 int field[21][19]; // Массив, содержащий информацию о поле игры
+int ends[2][2] = {-1}; // Массив, содержащий координаты концов траектории
+int move; // Переменная, фиксирующая очередь хода
 
 int waitclick(int *x1, int *y1, int *x2, int *y2);
-int press_left_button();
+int main_menu_button();
 void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game(int n);
 void init_game(int i);
-void check_move(int i, int dx, int dy,int *field);
+void game_begin(int i, int dx, int dy, int *field);
+void draw_segment();
+void between_dots(int *x, int *y, int dx, int dy);
 
 int main() {
    draw_main_menu();
-   new_game(press_left_button());
+   new_game(main_menu_button());
    while (1);
    return 0;
 }
 
 
-int waitclick(int *x1, int *y1, int *x2, int *y2) {// определение нажатия кнопки на мыши
+int waitclick(int *x1, int *y1) {// определение нажатия кнопки на мыши
    int mouse;
    while ((mouse=mousebuttons())==0) { 
       if (kbhit()) return 0; 
    }
    *x1=mousex();
    *y1=mousey();
-   while (mousebuttons()==0); 
-   *x2=mousex();
-   *y2=mousey();
+   while (mousebuttons()==0);
    return mouse;
 } 
 
@@ -77,11 +79,11 @@ void draw_menu_item(menu_item *main_menu) {// рисование кнопки г
    }
 } 
 
-int press_left_button() {// определение нажатия левой кнопки мыши по одной из кнопок в главном меню
-   int x1, x2, y1, y2;
-   while (1) {
-      while (waitclick(&x1, &y1, &x2, &y2) != 1 || x1 != x2 || y1 != y2);
-      for (int i = 0; i < 8; ++i) {
+int main_menu_button() {// определение нажатия левой кнопки мыши по одной из кнопок в главном меню
+   int x1, y1;
+   while(1){
+      while(waitclick(&x1, &y1) != 1);
+      for(int i = 0; i < 8; ++i){
          if (x1 >= main_menu[0].x && x1 <= main_menu[0].x + BUTTON_WIDTH && y1 >= main_menu[i].y && y1 <= main_menu[i].y + BUTTON_HEIGHT) {
             return i+1;
          }
@@ -117,7 +119,7 @@ void new_game(int n) { // загрузка  новой игры, правил, �
    }
 }
 void init_game(int i){ // инициализация параметров игры
-	for(int j = 0; j < 2*i+11; j++) for(int k = 0; k < 2*i+9; k++) field[j][k] = ((j >= 1 && j < 2*i+10 && k >= 1 && k < 2*i+8 && j % 2 != k % 2) ? 0 : 1);
+	for(int j = 0; j < 2*i+11; j++) for(int k = 0; k < 2*i+9; k++) field[j][k] = ((j >= 1 && j < 2*i+10 && k >= 1 && k < 2*i+8 && j % 2 == k % 2) ? 1 : 0);
 	int dx = (220+50*i-2*INDENT_FIELD)/(i+3), dy = (270+50*i-2*INDENT_FIELD)/(i+4);
 	initwindow(430+50*i, 270+50*i);
 	setbkcolor(BLUE);
@@ -132,5 +134,43 @@ void init_game(int i){ // инициализация параметров игр
 			fillellipse(INDENT_FIELD + k*dx, INDENT_FIELD + j*dy, 3, 3);
 		}
 	}
-    check_move(i, dx, dy, field);
+    game_begin(i, dx, dy);
+	
+}
+
+void game_begin(int i, int dx, int dy){ // процесс игры(проверка и выделение хода); если ход невозможен, функция завершит работу; возвращает 1 или 0, в зависимости от того, какой игрок победил
+	int x, y, vertices[2][2];
+	move = 0;
+	while(1){
+		if(waitclick(x, y) == 1 && !((x-INDENT_FIELD) % dx) != !((y-INDENT_FIELD) % dy) && x > INDENT_FIELD && x < INDENT_FIELD + dx*(i+3) && y > INDENT_FIELD && y < INDENT_FIELD + dy*(i+4)){
+			if((x-INDENT_FIELD)%dx){
+				vertices[0][0] = x-(x-INDENT_FIELD)%dx;
+				vertices[0][1] = y;
+				vertices[1][0] = vertices[0][0] + dx;
+				vertices[1][1] = y;
+			}
+			else{
+				vertices[0][0] = x;
+				vertices[0][1] = y-(y-INDENT_FIELD)%dy;
+				vertices[1][0] = x;
+				vertices[1][1] = vertices[0][1] + dy;
+			}
+			if(ends[0][0] == -1){
+				field[x][y] = 1;
+				ends[0][0] = x - (x%dx != 0);
+				ends[0][1] = y - (y%dy != 0);
+				ends[1][0] = x + (x%dx != 0);
+				ends[1][1] = y + (y%dy != 0);
+				setcolor(GREEN);
+				setlinestyle(SOLID_LINE, 0, 2);
+				setfillstyle(SOLID_FILL, GREEN);
+				line();
+			}
+
+		}		
+	}
+}
+
+void between_dots(int *x, int *y, int dx, int dy){
+	while(!(waitclick(x, y) == 1 && !((x-INDENT_FIELD) % dx) != !((y-INDENT_FIELD) % dy) && x > INDENT_FIELD && x < INDENT_FIELD + dx*(i+3) && y > INDENT_FIELD && y < INDENT_FIELD + dy*(i+4)));
 }
