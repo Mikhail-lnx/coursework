@@ -135,38 +135,35 @@ void init_game(int i){ // инициализация параметров игр
 		}
 	}
     game_begin(i, dx, dy);
-	
 }
 
 void game_begin(int i, int dx, int dy){ // процесс игры(проверка и выделение хода); если ход невозможен, функция завершит работу; возвращает 1 или 0, в зависимости от того, какой игрок победил
-	int x, y, vertices[2][2];
+	int x, y, vertices[2][2], coord_field[2][2];
 	move = 0;
 	while(1){
 		if(waitclick(x, y) == 1 && !((x-INDENT_FIELD) % dx) != !((y-INDENT_FIELD) % dy) && x > INDENT_FIELD && x < INDENT_FIELD + dx*(i+3) && y > INDENT_FIELD && y < INDENT_FIELD + dy*(i+4)){
-			if((x-INDENT_FIELD)%dx){
-				vertices[0][0] = x-(x-INDENT_FIELD)%dx;
-				vertices[0][1] = y;
-				vertices[1][0] = vertices[0][0] + dx;
-				vertices[1][1] = y;
-			}
-			else{
-				vertices[0][0] = x;
-				vertices[0][1] = y-(y-INDENT_FIELD)%dy;
-				vertices[1][0] = x;
-				vertices[1][1] = vertices[0][1] + dy;
-			}
+			vertices[0][0] = x-(x-INDENT_FIELD)%dx;
+			vertices[0][1] = y-(y-INDENT_FIELD)%dy;
+			vertices[1][0] = vertices[0][0] + dx*((x-INDENT_FIELD)%dx != 0);
+			vertices[1][1] = vertices[0][1] + dy*((y-INDENT_FIELD)%dy != 0);
+			coord_matrix[0][0] = 2*((x-INDENT_FIELD)/dx) + 1;
+			coord_matrix[0][1] = 2*((y-INDENT_FIELD)/dy) + 1;
+			coord_matrix[1][0] = 2*((x-INDENT_FIELD)/dx) + 1 + 2*((x-INDENT_FIELD)%dx != 0);
+			coord_matrix[1][1] = 2*((y-INDENT_FIELD)/dy) + 1 + 2*((y-INDENT_FIELD)%dy != 0);
 			if(ends[0][0] == -1){
-				field[x][y] = 1;
-				ends[0][0] = x - (x%dx != 0);
-				ends[0][1] = y - (y%dy != 0);
-				ends[1][0] = x + (x%dx != 0);
-				ends[1][1] = y + (y%dy != 0);
+				field[(coord_matrix[0][0] + coord_matrix[1][0])/2][(coord_matrix[0][1] + coord_matrix[1][1])/2] = 1;
+				ends[0][0] = coord_matrix[0][0];
+				ends[0][1] = coord_matrix[0][1];
+				ends[1][0] = coord_matrix[1][0];
+				ends[1][1] = coord_matrix[1][1];
 				setcolor(GREEN);
 				setlinestyle(SOLID_LINE, 0, 2);
 				setfillstyle(SOLID_FILL, GREEN);
-				line();
+				line(coord_matrix[0][0], coord_matrix[0][1], coord_matrix[1][0], coord_matrix[1][1]);
 			}
+			//else if(){
 
+			//}
 		}		
 	}
 }
