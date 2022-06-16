@@ -34,14 +34,12 @@ void draw_main_menu();
 void draw_menu_item(menu_item *main_menu);
 void new_game(int n);
 void init_game(int i);
-void game_begin(int i, int dx, int dy, int *field);
+void game_begin(int i, int dx, int dy);
 void draw_segment();
-void between_dots(int *x, int *y, int dx, int dy);
 
 int main() {
    draw_main_menu();
    new_game(main_menu_button());
-   while (1);
    return 0;
 }
 
@@ -131,17 +129,17 @@ void init_game(int i){ // инициализация параметров игр
 			setcolor(BLACK);
 			setlinestyle(SOLID_LINE, 0, 2);
 			setfillstyle(SOLID_FILL,BLACK);
-			fillellipse(INDENT_FIELD + k*dx, INDENT_FIELD + j*dy, 3, 3);
+			fillellipse(INDENT_FIELD + k*dx, INDENT_FIELD + j*dy, 2, 2);
 		}
 	}
     game_begin(i, dx, dy);
 }
 
 void game_begin(int i, int dx, int dy){ // процесс игры(проверка и выделение хода); если ход невозможен, функция завершит работу; возвращает 1 или 0, в зависимости от того, какой игрок победил
-	int x, y, vertices[2][2], coord_field[2][2];
+	int x, y, vertices[2][2], coord_matrix[2][2];
 	move = 0;
 	while(1){
-		if(waitclick(x, y) == 1 && !((x-INDENT_FIELD) % dx) != !((y-INDENT_FIELD) % dy) && x > INDENT_FIELD && x < INDENT_FIELD + dx*(i+3) && y > INDENT_FIELD && y < INDENT_FIELD + dy*(i+4)){
+		if(waitclick(&x, &y) == 1 && !((x-INDENT_FIELD) % dx) != !((y-INDENT_FIELD) % dy) && x >= INDENT_FIELD && x <= INDENT_FIELD + dx*(i+3) && y >= INDENT_FIELD && y <= INDENT_FIELD + dy*(i+4)){
 			vertices[0][0] = x-(x-INDENT_FIELD)%dx;
 			vertices[0][1] = y-(y-INDENT_FIELD)%dy;
 			vertices[1][0] = vertices[0][0] + dx*((x-INDENT_FIELD)%dx != 0);
@@ -159,7 +157,7 @@ void game_begin(int i, int dx, int dy){ // процесс игры(провер�
 				setcolor(GREEN);
 				setlinestyle(SOLID_LINE, 0, 2);
 				setfillstyle(SOLID_FILL, GREEN);
-				line(coord_matrix[0][0], coord_matrix[0][1], coord_matrix[1][0], coord_matrix[1][1]);
+				line(vertices[0][0], vertices[0][1], vertices[1][0], vertices[1][1]);
 			}
 			//else if(){
 
@@ -168,6 +166,4 @@ void game_begin(int i, int dx, int dy){ // процесс игры(провер�
 	}
 }
 
-void between_dots(int *x, int *y, int dx, int dy){
-	while(!(waitclick(x, y) == 1 && !((x-INDENT_FIELD) % dx) != !((y-INDENT_FIELD) % dy) && x > INDENT_FIELD && x < INDENT_FIELD + dx*(i+3) && y > INDENT_FIELD && y < INDENT_FIELD + dy*(i+4)));
-}
+
