@@ -2,8 +2,8 @@
 #include <graphics.h>
 
 /*==========Константы==========*/
-#define MENU_WIDTH 250
-#define MENU_HEIGHT 350
+#define MENU_WIDTH 220
+#define MENU_HEIGHT 250
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 50
 #define INDENT_FIELD 30
@@ -15,10 +15,10 @@ typedef struct menu_item {
 
  
 menu_item main_menu[]= { // Массив структур menu item, содержащих информацию о кнопках главного меню
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 60, "Новая игра"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 120, "Правила игры"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 180, "О программе"},
-   {(MENU_WIDTH-BUTTON_WIDTH)/2, 240, "Выход"}
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 10, "Новая игра"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 70, "Правила игры"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 130, "О программе"},
+   {(MENU_WIDTH-BUTTON_WIDTH)/2, 190, "Выход"}
 };
 
 int field[17][15]; // Массив, содержащий информацию о поле игры
@@ -91,7 +91,7 @@ void new_game(int n) { // загрузка  новой игры, правил, �
    closegraph();
    switch(n) {
       case 1:
-         init_game();
+         //init_game();
          return;
       case 2:
          return;
@@ -101,6 +101,3 @@ void new_game(int n) { // загрузка  новой игры, правил, �
          return;
    }
 }
-
-
-
