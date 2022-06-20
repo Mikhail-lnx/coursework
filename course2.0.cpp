@@ -137,8 +137,9 @@ void init_game(){
 		for(int j = 0; j < 6 + i%2; j++){
 			segment[i][j].v1 = {(j+1)*INDENT, (i/2+1)*INDENT, i+1, 2*j+1};
 			segment[i][j].v2 = {(j+2-(i%2))*INDENT, (i/2+1+i%2)*INDENT, i+1+2*(i%2), 2*j+3-2*(i%2)};
-			segment[i][j].left = (j+1+0.5*!(i%2))*INDENT-SQUARE_SIDE/2;
-			segment[i][j].top = (i%2 ? i+1.5 : i/2+1)*INDENT-SQUARE_SIDE/2;
+			segment[i][j].left = (segment[i][j].v1.x + segment[i][j].v2.x)/2 - SQUARE_SIDE/2;
+			segment[i][j].top = (segment[i][j].v1.y + segment[i][j].v2.y)/2 - SQUARE_SIDE/2;
+
 		}
 	}
 	setcolor(GREEN);
