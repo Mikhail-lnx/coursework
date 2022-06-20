@@ -125,6 +125,7 @@ void init_game(){
 	move = 0;
 	initwindow(FIELD_WIDTH, FIELD_HEIGHT, "The Slider");
 	setbkcolor(WHITE);
+         clearviewport();
 	for(int i = 1; i <= 8; i++){ // отрисовка поля
 		for(int j = 1; j <= 7; j++){
 			setcolor(BLACK);
@@ -137,8 +138,8 @@ void init_game(){
 		for(int j = 0; j < 6 + i%2; j++){
 			segment[i][j].v1 = {(j+1)*INDENT, (i/2+1)*INDENT, i+1, 2*j+1};
 			segment[i][j].v2 = {(j+2-(i%2))*INDENT, (i/2+1+i%2)*INDENT, i+1+2*(i%2), 2*j+3-2*(i%2)};
-			segment[i][j].left = (segment[i][j].v1.x + segment[i][j].v2.x)/2 - SQUARE_SIDE/2;
-			segment[i][j].top = (segment[i][j].v1.y + segment[i][j].v2.y)/2 - SQUARE_SIDE/2;
+			segment[i][j].left = (segment[i][j].v1.x + segment[i][j].v2.x)/2.0 - SQUARE_SIDE/2;
+			segment[i][j].top = (segment[i][j].v1.y + segment[i][j].v2.y)/2.0 - SQUARE_SIDE/2;
 
 		}
 	}
@@ -176,7 +177,7 @@ int check_press(edge *current){
 	for(int i = 0; i < 15; i++){
 		for(int j = 0; j < 6 + i%2; j++){
 			if(x >= segment[i][j].left && x <= segment[i][j].left + SQUARE_SIDE && y >= segment[i][j].top && y <= segment[i][j].top + SQUARE_SIDE){
-				current = &segment[i][j];
+				*current = segment[i][j];
 				return 1;
 			}
 		}
@@ -194,10 +195,14 @@ int is_equal(vertex node1, vertex node2){ // проверяет, равны ли
 }
 
 void make_move(edge current){ // рисование отрезка и передача хода
-	if(move)
+	if(move){
+               setcolor(RED);
 		setfillstyle(SOLID_FILL, RED);
-	else
+        }
+	else{
+               setcolor(GREEN);
 		setfillstyle(SOLID_FILL, GREEN);
+        }
 	move = !move;
 	line(current.v1.x, current.v1.y, current.v2.x, current.v2.y);
 	field[(current.v1.row + current.v2.row)/2][(current.v1.col + current.v2.col)/2] = 1;
