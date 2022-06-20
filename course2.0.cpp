@@ -9,7 +9,7 @@
 #define INDENT 50
 #define FIELD_WIDTH 400
 #define FIELD_HEIGHT 450
-#define SQUARE_SIDE 10
+#define SQUARE_SIDE 20
 
 typedef struct menu_item {
    int x,y;
@@ -131,21 +131,19 @@ void init_game(){
 			setcolor(BLACK);
 			setlinestyle(SOLID_LINE, 0, 2);
 			setfillstyle(SOLID_FILL,BLACK);
-			fillellipse(j*INDENT, i*INDENT, 2, 2);
+			fillellipse(j*INDENT, i*INDENT, 3, 3);
 		}
 	}
 	for(int i = 0; i < 15; i++){ // инициализация массива segment
 		for(int j = 0; j < 6 + i%2; j++){
-			segment[i][j].v1 = {(j+1)*INDENT, (i/2+1)*INDENT, i+1, 2*j+1};
-			segment[i][j].v2 = {(j+2-(i%2))*INDENT, (i/2+1+i%2)*INDENT, i+1+2*(i%2), 2*j+3-2*(i%2)};
-			segment[i][j].left = (segment[i][j].v1.x + segment[i][j].v2.x)/2.0 - SQUARE_SIDE/2;
-			segment[i][j].top = (segment[i][j].v1.y + segment[i][j].v2.y)/2.0 - SQUARE_SIDE/2;
+			segment[i][j].v1 = {(j+1)*INDENT, (i/2+1)*INDENT, i+1-i%2, 2*j+1};
+			segment[i][j].v2 = {(j+2-(i%2))*INDENT, (i/2+1+i%2)*INDENT, i+1+i%2, 2*j+3-2*(i%2)};
+			segment[i][j].left = (segment[i][j].v1.x + segment[i][j].v2.x)/2 - SQUARE_SIDE/2;
+			segment[i][j].top = (segment[i][j].v1.y + segment[i][j].v2.y)/2 - SQUARE_SIDE/2;
 
 		}
 	}
-	setcolor(GREEN);
 	setlinestyle(SOLID_LINE, 0, 2);
-	setfillstyle(SOLID_FILL, GREEN);
 	start_game();
 }
 
@@ -154,18 +152,17 @@ void start_game(){
 	edge current_edge;
 	while(1){
 		if(check_press(&current_edge)){
-			if(beg.x == -1 || (is_equal(current_edge.v1, beg) || is_equal(current_edge.v1, end)) && is_isolated(current_edge.v2) || (is_equal(current_edge.v2, beg) || is_equal(current_edge.v2, end)) && is_isolated(current_edge.v1))
-				make_move(current_edge);
 			if(beg.x == -1){
 				beg = current_edge.v1;
 				end = current_edge.v2;
 			}
-			else if((is_equal(current_edge.v1, beg) || is_equal(current_edge.v1, end)) && is_isolated(current_edge.v2)){
+			else if((is_equal(current_edge.v1, beg) || is_equal(current_edge.v1, end)) && is_isolated(current_edge.v2))
 				(is_equal(current_edge.v1, beg) ? beg : end) = current_edge.v2;
-			}
-			else if((is_equal(current_edge.v2, beg) || is_equal(current_edge.v2, end)) && is_isolated(current_edge.v1)){
+			else if((is_equal(current_edge.v2, beg) || is_equal(current_edge.v2, end)) && is_isolated(current_edge.v1))
 				(is_equal(current_edge.v2, beg) ? beg : end) = current_edge.v1;
-			}
+                        else 
+                           continue;
+                        make_move(current_edge);
 		}
 	}	
 }
@@ -187,11 +184,11 @@ int check_press(edge *current){
 
 int is_isolated(vertex node){ // проверяет, изолирована ли вершина
 	int i = node.row, j = node.col;
-	return !field[i+1][j] && !field[i-1][j] && !field[i][j-1] && !field[i][j+1] ? 1 : 0;
+	return !field[i+1][j] && !field[i-1][j] && !field[i][j-1] && !field[i][j+1];
 }
 
 int is_equal(vertex node1, vertex node2){ // проверяет, равны ли вершины
-	return node1.x == node2.x && node1.y == node2.y ? 1 : 0;
+	return node1.x == node2.x && node1.y == node2.y;
 }
 
 void make_move(edge current){ // рисование отрезка и передача хода
