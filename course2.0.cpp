@@ -24,11 +24,11 @@ menu_item main_menu[]= { // Массив структур menu item, содер�
    {(MENU_WIDTH-BUTTON_WIDTH)/2, 190, "Выход"}
 };
 
-typedef struct vertex{
+typedef struct vertex{ // структура, содержащая координаты вершины и соответствующие ей номера строки и столбца в массиве field
 	int x, y, row, col;
 } vertex;
 
-typedef struct edge{
+typedef struct edge{ // структура для отрезка траектории, содержащая две вершины и координаты точки для 
 	vertex v1;
 	vertex v2;
 	int left, top;
@@ -48,9 +48,9 @@ void new_game(int n);
 void init_game();
 void start_game();
 int check_press(edge *current);
-int is_isolated(vertex node);
-int is_equal(vertex node1, vertex node2);
-void make_move(edge current);
+int is_equal(vertex* node1, vertex* node2);
+int is_possible_move(vertex* node1, vertex* node2);
+int end_game();
 
 int main(){
    draw_main_menu();
@@ -148,23 +148,38 @@ void init_game(){
 }
 
 void start_game(){
-	int x, y;
 	edge current_edge;
-	while(1){
+	while(!end_game()){
 		if(check_press(&current_edge)){
 			if(beg.x == -1){
 				beg = current_edge.v1;
 				end = current_edge.v2;
 			}
-			else if((is_equal(current_edge.v1, beg) || is_equal(current_edge.v1, end)) && is_isolated(current_edge.v2))
-				(is_equal(current_edge.v1, beg) ? beg : end) = current_edge.v2;
-			else if((is_equal(current_edge.v2, beg) || is_equal(current_edge.v2, end)) && is_isolated(current_edge.v1))
-				(is_equal(current_edge.v2, beg) ? beg : end) = current_edge.v1;
-                        else 
-                           continue;
-                        make_move(current_edge);
+			else if(is_possible_move(&current_edge.v1, &current_edge.v2))
+				(is_equal(&current_edge.v1, &beg) ? beg : end) = current_edge.v2;
+			else if(is_possible_move(&current_edge.v2, &current_edge.v1))
+				(is_equal(&current_edge.v2, &beg) ? beg : end) = current_edge.v1;
+            else 
+                continue;
+			if(move){
+				setcolor(RED);
+				setfillstyle(SOLID_FILL, RED);
+			}
+			else{
+				setcolor(GREEN);
+				setfillstyle(SOLID_FILL, GREEN);
+			}
+			move = !move;
+			line(current.v1.x, current.v1.y, current.v2.x, current.v2.y);
+			field[(current.v1.row + current.v2.row)/2][(current.v1.col + current.v2.col)/2] = 1;
 		}
-	}	
+	}
+	if(move){
+		printf("Победил зеленый\n");
+	}
+	else{
+		printf("Победил красный\n")
+	}
 }
 
 int check_press(edge *current){
@@ -182,25 +197,22 @@ int check_press(edge *current){
 	return 0;
 }
 
-int is_isolated(vertex node){ // проверяет, изолирована ли вершина
-	int i = node.row, j = node.col;
-	return !field[i+1][j] && !field[i-1][j] && !field[i][j-1] && !field[i][j+1];
+int is_equal(vertex* node1, vertex* node2){ // проверяет, равны ли вершины
+	return node1->x == node2->x && node1->y == node2->y;
 }
 
-int is_equal(vertex node1, vertex node2){ // проверяет, равны ли вершины
-	return node1.x == node2.x && node1.y == node2.y;
+int is_possible_move(vertex* node1, vertex* node2){ // проверяет, является ли вершина node1 крайней точкой траектории и является ли node2 изолированной
+	int i = node2->row, j = node2->col;
+	return (is_equal(node1, &end) || is_equal(node1, &beg)) && !field[i+1][j] && !field[i-1][j] && !field[i][j-1] && !field[i][j+1];
 }
 
-void make_move(edge current){ // рисование отрезка и передача хода
-	if(move){
-               setcolor(RED);
-		setfillstyle(SOLID_FILL, RED);
-        }
-	else{
-               setcolor(GREEN);
-		setfillstyle(SOLID_FILL, GREEN);
-        }
-	move = !move;
-	line(current.v1.x, current.v1.y, current.v2.x, current.v2.y);
-	field[(current.v1.row + current.v2.row)/2][(current.v1.col + current.v2.col)/2] = 1;
+int end_game(){
+	int flag = 1;
+	for(int i = 0; i < 15; i++){
+		for(int j = 0; j < 6 + i%2; j++){
+			if(beg.x == -1 || is_possible_move(segment[i][j].v1, segment[i][j].v2) || is_possible_move(segment[i][j].v2, segment[i][j].v1))
+				flag = 0;
+		}
+	}
+	return flag;
 }
