@@ -51,6 +51,7 @@ int check_press(edge *current);
 int is_equal(vertex* node1, vertex* node2);
 int is_possible_move(vertex* node1, vertex* node2);
 int end_game();
+void game_over();
 
 int main(){
    draw_main_menu();
@@ -178,7 +179,7 @@ void start_game(){
 		printf("Победил зеленый\n");
 	}
 	else{
-		printf("Победил красный\n")
+		printf("Победил красный\n");
 	}
 }
 
@@ -215,4 +216,18 @@ int end_game(){
 		}
 	}
 	return flag;
+}
+
+void game_over(){
+	char s[] = (move ? "зелёный" : "красный");
+	setfillstyle(SOLID_FILL, COLOR(255,165,0));
+		bar(main_menu->x, main_menu->y, main_menu->x+BUTTON_WIDTH, main_menu->y+BUTTON_HEIGHT);
+		moveto(main_menu->x+BUTTON_WIDTH/2, main_menu->y+BUTTON_HEIGHT*2/3);
+		setbkcolor(COLOR(255,165,0));
+		setcolor(BLACK);
+		settextjustify(CENTER_TEXT, CENTER_TEXT);
+		settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
+		outtext(main_menu->text);
+   }
+
 }
